@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  api:
+    container_name: workoutflow-api
+    build: .
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+    volumes:
+    - .:/home/appuser/workoutflow_api:cached
+    ports:
+      - "8000:8000"
+
+  db:
+      image: postgres:15-alpine
+      container_name: workoutflow_postgres
+      volumes:
+        - workoutflow_postgres:/var/lib/postgresql/data
+        - ./docker/postgres/database:/database
+      ports:
+      - "5432:5432"
+      environment:
+        - POSTGRES_USER=workoutflow
+        - POSTGRES_PASSWORD=workoutflow
+        - POSTGRES_DB=workoutflow_db
+
+volumes:
+      workoutflow_postgres:
