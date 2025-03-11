@@ -7,5 +7,4 @@ app = FastAPI(title="WorkoutFlow API", version="0.1.0")
 
 handler = Mangum(app)
 
-
 Base.metadata.create_all(engine)
