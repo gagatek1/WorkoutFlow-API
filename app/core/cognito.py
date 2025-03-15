@@ -6,7 +6,7 @@ from os import getenv
 import boto3
 from dotenv import load_dotenv
 
-from app.schemas.auth import UserSignUp, UserVerify
+from app.schemas.auth import UserSignIn, UserSignUp, UserVerify
 
 load_dotenv()
 
@@ -37,7 +37,7 @@ class Cognito:
             ClientId=AWS_COGNITO_APP_CLIENT_ID,
             Username=user.email,
             Password=user.password,
-            SecretHash=secret_hash
+            SecretHash=secret_hash,
         )
         return response
 
@@ -50,4 +50,17 @@ class Cognito:
             SecretHash=secret_hash,
         )
 
+        return response
+
+    def user_signin(self, user: UserSignIn):
+        secret_hash = self._generate_secret_hash(user.email)
+        response = self.client.initiate_auth(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            AuthFlow="USER_PASSWORD_AUTH",
+            AuthParameters={
+                "USERNAME": user.email,
+                "PASSWORD": user.password,
+                "SECRET_HASH": secret_hash,
+            },
+        )
         return response
