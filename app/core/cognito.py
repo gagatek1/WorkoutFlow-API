@@ -32,11 +32,12 @@ class Cognito:
         return base64.b64encode(digest).decode()
 
     def user_signup(self, user: UserSignUp):
+        secret_hash = self._generate_secret_hash(user.email)
         response = self.client.sign_up(
             ClientId=AWS_COGNITO_APP_CLIENT_ID,
             Username=user.email,
             Password=user.password,
-            SecretHash=self._generate_secret_hash(user.email),
+            SecretHash=secret_hash
         )
         return response
 
