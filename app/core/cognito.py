@@ -7,8 +7,8 @@ import boto3
 from dotenv import load_dotenv
 
 from app.schemas.auth import (UserChangePassword, UserConfirmForgotPassword,
-                              UserForgotPassword, UserRefreshToken, UserSignIn,
-                              UserSignUp, UserVerify)
+                              UserForgotPassword, UserLogout, UserRefreshToken,
+                              UserSignIn, UserSignUp, UserVerify)
 
 load_dotenv()
 
@@ -108,5 +108,10 @@ class Cognito:
             Password=data.new_password,
             SecretHash=secret_hash,
         )
+
+        return response
+
+    def logout(self, data: UserLogout):
+        response = self.client.global_sign_out(AccessToken=data.access_token)
 
         return response
