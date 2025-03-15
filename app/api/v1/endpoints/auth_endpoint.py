@@ -5,12 +5,14 @@ from app.core.cognito import Cognito
 from app.core.dependencies import get_cognito
 from app.schemas.auth import (
     UserChangePassword,
+    UserForgotPassword,
     UserRefreshToken,
     UserSignIn,
     UserSignUp,
     UserVerify,
 )
 from app.services.auth.change_password_service import change_password_service
+from app.services.auth.forgot_password_service import forgot_password_service
 from app.services.auth.new_token_service import new_token_service
 from app.services.auth.signin_service import signin_service
 from app.services.auth.signup_service import signup_service
@@ -44,3 +46,10 @@ async def change_password(
     data: UserChangePassword, cognito: Cognito = Depends(get_cognito)
 ):
     return change_password_service(data, cognito)
+
+
+@auth_router.post("/forgot", status_code=status.HTTP_200_OK)
+async def forgot_password(
+    data: UserForgotPassword, cognito: Cognito = Depends(get_cognito)
+):
+    return forgot_password_service(data, cognito)
