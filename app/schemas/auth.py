@@ -9,3 +9,8 @@ class UserSignUp(BaseModel):
 class UserVerify(BaseModel):
     email: EmailStr
     confirmation_code: str
+
+
+class UserSignIn(BaseModel):
+    email: EmailStr
+    password: str
