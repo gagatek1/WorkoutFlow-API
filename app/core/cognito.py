@@ -6,7 +6,7 @@ from os import getenv
 import boto3
 from dotenv import load_dotenv
 
-from app.schemas.auth import UserSignIn, UserSignUp, UserVerify
+from app.schemas.auth import UserRefreshToken, UserSignIn, UserSignUp, UserVerify
 
 load_dotenv()
 
@@ -63,4 +63,17 @@ class Cognito:
                 "SECRET_HASH": secret_hash,
             },
         )
+        return response
+
+    def new_token(self, data: UserRefreshToken):
+        secret_hash = self._generate_secret_hash(data.user_id)
+        response = self.client.initiate_auth(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            AuthFlow="REFRESH_TOKEN_AUTH",
+            AuthParameters={
+                "REFRESH_TOKEN": data.refresh_token,
+                "SECRET_HASH": secret_hash,
+            },
+        )
+
         return response
