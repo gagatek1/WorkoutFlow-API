@@ -2,21 +2,14 @@ from fastapi import APIRouter, Depends
 from starlette import status
 
 from app.core.cognito import Cognito
+from app.core.database import db_dependency
 from app.core.dependencies import get_cognito
-from app.schemas.auth import (
-    UserChangePassword,
-    UserConfirmForgotPassword,
-    UserForgotPassword,
-    UserLogout,
-    UserRefreshToken,
-    UserSignIn,
-    UserSignUp,
-    UserVerify,
-)
+from app.schemas.auth import (UserChangePassword, UserConfirmForgotPassword,
+                              UserForgotPassword, UserLogout, UserRefreshToken,
+                              UserSignIn, UserSignUp, UserVerify)
 from app.services.auth.change_password_service import change_password_service
-from app.services.auth.confirm_forgot_password_service import (
-    confirm_forgot_password_service,
-)
+from app.services.auth.confirm_forgot_password_service import \
+    confirm_forgot_password_service
 from app.services.auth.forgot_password_service import forgot_password_service
 from app.services.auth.logout_service import logout_service
 from app.services.auth.new_token_service import new_token_service
@@ -28,8 +21,10 @@ auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @auth_router.post("/signup", status_code=status.HTTP_201_CREATED)
-async def signup_user(user: UserSignUp, cognito: Cognito = Depends(get_cognito)):
-    return signup_service(user, cognito)
+async def signup_user(
+    user: UserSignUp, db: db_dependency, cognito: Cognito = Depends(get_cognito)
+):
+    return signup_service(user, cognito, db)
 
 
 @auth_router.post("/verify", status_code=status.HTTP_200_OK)
