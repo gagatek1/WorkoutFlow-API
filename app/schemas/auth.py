@@ -19,3 +19,9 @@ class UserSignIn(BaseModel):
 class UserRefreshToken(BaseModel):
     user_id: str
     refresh_token: str
+
+
+class UserChangePassword(BaseModel):
+    old_password: str
+    new_password: str
+    access_token: str
