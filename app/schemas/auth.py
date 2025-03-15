@@ -35,3 +35,7 @@ class UserConfirmForgotPassword(BaseModel):
     email: EmailStr
     confirmation_code: str
     new_password: str
+
+
+class UserLogout(BaseModel):
+    access_token: str
