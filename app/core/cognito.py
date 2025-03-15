@@ -6,9 +6,16 @@ from os import getenv
 import boto3
 from dotenv import load_dotenv
 
-from app.schemas.auth import (UserChangePassword, UserConfirmForgotPassword,
-                              UserForgotPassword, UserLogout, UserRefreshToken,
-                              UserSignIn, UserSignUp, UserVerify)
+from app.schemas.auth import (
+    UserChangePassword,
+    UserConfirmForgotPassword,
+    UserForgotPassword,
+    UserLogout,
+    UserRefreshToken,
+    UserSignIn,
+    UserSignUp,
+    UserVerify,
+)
 
 load_dotenv()
 
@@ -113,5 +120,10 @@ class Cognito:
 
     def logout(self, data: UserLogout):
         response = self.client.global_sign_out(AccessToken=data.access_token)
+
+        return response
+
+    def get_user(self, access_token: str):
+        response = self.client.get_user(AccessToken=access_token)
 
         return response
