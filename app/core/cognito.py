@@ -6,9 +6,16 @@ from os import getenv
 import boto3
 from dotenv import load_dotenv
 
-from app.schemas.auth import (UserChangePassword, UserConfirmForgotPassword,
-                              UserForgotPassword, UserLogout, UserRefreshToken,
-                              UserSignIn, UserSignUp, UserVerify)
+from app.schemas.auth import (
+    UserChangePassword,
+    UserConfirmForgotPassword,
+    UserForgotPassword,
+    UserLogout,
+    UserRefreshToken,
+    UserSignIn,
+    UserSignUp,
+    UserVerify,
+)
 
 load_dotenv()
 
