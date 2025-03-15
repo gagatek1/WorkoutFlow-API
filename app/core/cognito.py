@@ -6,7 +6,7 @@ from os import getenv
 import boto3
 from dotenv import load_dotenv
 
-from app.schemas.auth import UserSignUp
+from app.schemas.auth import UserSignUp, UserVerify
 
 load_dotenv()
 
@@ -20,7 +20,8 @@ class Cognito:
     def __init__(self):
         self.client = boto3.client("cognito-idp", region_name=REGION_NAME)
 
-    def _generate_secret_hash(self, username: str) -> str:
+    @staticmethod
+    def _generate_secret_hash(username: str) -> str:
         message = username + AWS_COGNITO_APP_CLIENT_ID
         secret = AWS_COGNITO_APP_CLIENT_SECRET
         digest = hmac.new(
@@ -37,4 +38,15 @@ class Cognito:
             Password=user.password,
             SecretHash=self._generate_secret_hash(user.email),
         )
+        return response
+
+    def verify_account(self, data: UserVerify):
+        secret_hash = self._generate_secret_hash(data.email)
+        response = self.client.confirm_sign_up(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            Username=data.email,
+            ConfirmationCode=data.confirmation_code,
+            SecretHash=secret_hash,
+        )
+
         return response
