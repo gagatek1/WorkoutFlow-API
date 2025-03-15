@@ -25,3 +25,7 @@ class UserChangePassword(BaseModel):
     old_password: str
     new_password: str
     access_token: str
+
+
+class UserForgotPassword(BaseModel):
+    email: EmailStr
