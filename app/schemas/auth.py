@@ -14,3 +14,8 @@ class UserVerify(BaseModel):
 class UserSignIn(BaseModel):
     email: EmailStr
     password: str
+
+
+class UserRefreshToken(BaseModel):
+    user_id: str
+    refresh_token: str
