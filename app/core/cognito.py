@@ -6,7 +6,13 @@ from os import getenv
 import boto3
 from dotenv import load_dotenv
 
-from app.schemas.auth import UserRefreshToken, UserSignIn, UserSignUp, UserVerify
+from app.schemas.auth import (
+    UserChangePassword,
+    UserRefreshToken,
+    UserSignIn,
+    UserSignUp,
+    UserVerify,
+)
 
 load_dotenv()
 
@@ -74,6 +80,15 @@ class Cognito:
                 "REFRESH_TOKEN": data.refresh_token,
                 "SECRET_HASH": secret_hash,
             },
+        )
+
+        return response
+
+    def change_password(self, data: UserChangePassword):
+        response = self.client.change_password(
+            PreviousPassword=data.old_password,
+            ProposedPassword=data.new_password,
+            AccessToken=data.access_token,
         )
 
         return response
