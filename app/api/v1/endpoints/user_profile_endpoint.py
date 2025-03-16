@@ -6,7 +6,7 @@ from app.schemas.user_profile import UserProfile
 from app.services.user_profile.get_service import get_service
 from app.services.user_profile.update_service import update_service
 
-user_profile_router = APIRouter(prefix="/profile", tags=["profile"])
+user_profile_router = APIRouter(prefix="/profiles", tags=["profiles"])
 
 
 @user_profile_router.put("/update/{profile_id}")
