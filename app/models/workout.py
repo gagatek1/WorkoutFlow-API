@@ -7,7 +7,7 @@ from app.core.database import Base
 
 
 class Workout(Base):
-    __tablename__ = "workout"
+    __tablename__ = "workouts"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)

@@ -5,7 +5,7 @@ from app.core.database import Base
 
 
 class UserProfile(Base):
-    __tablename__ = "user_profile"
+    __tablename__ = "user_profiles"
 
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String)
