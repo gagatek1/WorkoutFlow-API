@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 
@@ -11,4 +12,5 @@ class UserProfile(Base):
     last_name = Column(String)
     total_weight = Column(Integer, default=0)
     workout_quantity = Column(Integer, default=0)
-    user_id = Column(String, unique=True, nullable=False)
+    user_id = Column(String, unique=True, nullable=False, index=True)
+    workouts = relationship("Workout", back_populates="profile")
