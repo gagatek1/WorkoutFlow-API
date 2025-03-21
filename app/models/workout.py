@@ -17,3 +17,4 @@ class Workout(Base):
         Integer, ForeignKey("user_profiles.id"), index=True, nullable=False
     )
     profile = relationship("UserProfile", back_populates="workouts")
+    exercises = relationship("Exercise", back_populates="workout")
