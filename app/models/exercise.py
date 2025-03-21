@@ -9,6 +9,8 @@ class Exercise(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    total_weight = Column(Integer, default=0)
+    sets = Column(Integer)
+    reps = Column(Integer)
+    weight = Column(Integer)
     workout_id = Column(Integer, ForeignKey("workouts.id"), index=True, nullable=False)
     workout = relationship("Workout", back_populates="exercises")
