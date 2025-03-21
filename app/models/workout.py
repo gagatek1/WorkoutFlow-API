@@ -14,6 +14,6 @@ class Workout(Base):
     date = Column(Date, default=date.today())
     total_weight = Column(Integer, default=0)
     profile_id = Column(
-        Integer, ForeignKey("user_profile.id"), index=True, nullable=False
+        Integer, ForeignKey("user_profiles.id"), index=True, nullable=False
     )
     profile = relationship("UserProfile", back_populates="workouts")
