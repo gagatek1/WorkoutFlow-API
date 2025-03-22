@@ -15,6 +15,7 @@ def delete_service(workout_id, db, user):
     if workout is None:
         raise HTTPException(status_code=404, detail="Not found")
     if workout.profile_id == profile.id:
+        profile.workout_quantity -= 1
         db.delete(workout)
         db.commit()
     else:
