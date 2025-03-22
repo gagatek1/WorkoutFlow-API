@@ -3,10 +3,11 @@ from starlette import status
 
 from app.core.database import db_dependency
 from app.core.security import get_token
-from app.schemas.exercise import Exercise
+from app.schemas.exercise import Exercise, UpdateExercise
 from app.services.exercise.create_service import create_service
 from app.services.exercise.delete_service import delete_service
 from app.services.exercise.get_service import get_exercise, get_exercises
+from app.services.exercise.update_service import update_service
 
 exercise_router = APIRouter(prefix="/exercises", tags=["exercises"])
 
@@ -35,3 +36,13 @@ async def delete_exercise(
     exercise_id, db: db_dependency, user: dict = Depends(get_token)
 ):
     delete_service(exercise_id, db, user)
+
+
+@exercise_router.put("/update/{exercise_id}")
+async def update_exercise(
+    exercise_id,
+    data: UpdateExercise,
+    db: db_dependency,
+    user: dict = Depends(get_token),
+):
+    return update_service(exercise_id, data, db, user)
