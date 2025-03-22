@@ -9,12 +9,14 @@ def create_service(data: CreateWorkout, db, user):
     if data.name is None:
         raise HTTPException(status_code=422, detail="Name is none")
 
-    profile_id = (
+    profile = (
         db.query(UserProfile)
         .filter(UserProfile.user_id == user.get("Username"))
         .first()
     )
-    new_workout = Workout(name=data.name, date=data.date, profile_id=profile_id.id)
+    new_workout = Workout(name=data.name, date=data.date, profile_id=profile.id)
+
+    profile.workout_quantity += 1
 
     db.add(new_workout)
     db.commit()
