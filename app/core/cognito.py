@@ -127,3 +127,16 @@ class Cognito:
         response = self.client.get_user(AccessToken=access_token)
 
         return response
+
+    def change_user_email(self, access_token: str, new_email: str):
+        response = self.client.update_user_attributes(
+            AccessToken=access_token,
+            UserAttributes=[
+                {
+                    "Name": "email",
+                    "Value": new_email,
+                },
+            ],
+        )
+
+        return response
