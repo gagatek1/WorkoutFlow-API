@@ -7,9 +7,7 @@ from app.models.workout import Workout
 def delete_service(workout_id, db, cognito_user):
     workout = db.query(Workout).filter(Workout.id == workout_id).first()
     user = (
-        db.query(User)
-        .filter(User.cognito_id == cognito_user.get("Username"))
-        .first()
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
     )
 
     if workout is None:

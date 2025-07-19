@@ -10,9 +10,7 @@ def create_service(data: CreateWorkout, db, cognito_user):
         raise HTTPException(status_code=422, detail="Name is none")
 
     user = (
-        db.query(User)
-        .filter(User.cognito_id == cognito_user.get("Username"))
-        .first()
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
     )
     new_workout = Workout(name=data.name, date=data.date, user_id=user.id)
 
