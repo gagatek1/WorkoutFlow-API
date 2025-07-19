@@ -9,9 +9,7 @@ def update_service(exercise_id: int, data: UpdateExercise, db, cognito_user):
     exercise = db.query(Exercise).filter(Exercise.id == exercise_id).first()
 
     user = (
-        db.query(User)
-        .filter(User.cognito_id == cognito_user.get("Username"))
-        .first()
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
     )
 
     if user.id != exercise.workout.user_id:

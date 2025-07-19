@@ -8,9 +8,7 @@ from app.models.workout import Workout
 def get_exercise(exercise_id, db, cognito_user):
     exercise = db.query(Exercise).filter(Exercise.id == exercise_id).first()
     user = (
-        db.query(User)
-        .filter(User.cognito_id == cognito_user.get("Username"))
-        .first()
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
     )
     if exercise is None:
         raise HTTPException(status_code=404, detail="Not found")
@@ -23,9 +21,7 @@ def get_exercise(exercise_id, db, cognito_user):
 
 def get_exercises(db, cognito_user):
     user = (
-        db.query(User)
-        .filter(User.cognito_id == cognito_user.get("Username"))
-        .first()
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
     )
     exercises = (
         db.query(Exercise)

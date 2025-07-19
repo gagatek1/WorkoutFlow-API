@@ -9,9 +9,7 @@ from app.schemas.exercise import Exercise
 def create_service(data: Exercise, db, cognito_user):
     workout = db.query(Workout).filter(Workout.id == data.workout_id).first()
     user = (
-        db.query(User)
-        .filter(User.cognito_id == cognito_user.get("Username"))
-        .first()
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
     )
 
     if workout is None:
