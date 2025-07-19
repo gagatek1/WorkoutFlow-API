@@ -13,8 +13,6 @@ class Workout(Base):
     name = Column(String)
     date = Column(Date, default=date.today())
     total_weight = Column(Integer, default=0)
-    user_id = Column(
-        Integer, ForeignKey("users.id"), index=True, nullable=False
-    )
+    user_id = Column(Integer, ForeignKey("users.id"), index=True, nullable=False)
     user = relationship("User", back_populates="workouts")
     exercises = relationship("Exercise", back_populates="workout")
