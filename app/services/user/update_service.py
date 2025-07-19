@@ -1,22 +1,18 @@
-from typing import Optional
-
-from fastapi import Header, HTTPException
-from starlette import status
-
-from app.core.cognito import Cognito
-from app.schemas.user import UserEmail
+from app.models.user import User
+from app.schemas.user import User as UpdateUser
 
 
-def get_token(authorization: Optional[str] = Header(None)):
-    return authorization
+def update_service(update_profile: UpdateUser, db, cognito_user):
+    user = (
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
+    )
 
+    if update_profile.first_name is not None:
+        user.first_name = update_profile.first_name
+    if update_profile.last_name is not None:
+        user.last_name = update_profile.last_name
 
-def update_email_service(data: UserEmail, authorization, cognito: Cognito):
-    if authorization is None or not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
-        )
+    db.commit()
+    db.refresh(user)
 
-    access_token = authorization.split(" ")[1]
-    email = data.email
-    return cognito.change_user_email(access_token, email)
+    return user
