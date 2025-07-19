@@ -19,7 +19,7 @@ async def create_workout(
     return create_service(data, db, user)
 
 
-@workout_router.put("/update/{workout_id}")
+@workout_router.put("/{workout_id}")
 async def update_workout(
     workout_id, data: Workout, db: db_dependency, user: dict = Depends(get_token)
 ):
@@ -36,7 +36,7 @@ async def show_workouts(db: db_dependency, user: dict = Depends(get_token)):
     return get_workouts(db, user)
 
 
-@workout_router.delete("/delete/{workout_id}", status_code=status.HTTP_204_NO_CONTENT)
+@workout_router.delete("/{workout_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_workout(
     workout_id, db: db_dependency, user: dict = Depends(get_token)
 ):
