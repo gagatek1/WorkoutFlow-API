@@ -1,22 +1,22 @@
 from fastapi import HTTPException
 
 from app.models.exercise import Exercise as ExerciseModel
-from app.models.user_profile import UserProfile
+from app.models.user import User
 from app.models.workout import Workout as Workout
 from app.schemas.exercise import Exercise
 
 
-def create_service(data: Exercise, db, user):
+def create_service(data: Exercise, db, cognito_user):
     workout = db.query(Workout).filter(Workout.id == data.workout_id).first()
-    profile = (
-        db.query(UserProfile)
-        .filter(UserProfile.user_id == user.get("Username"))
+    user = (
+        db.query(User)
+        .filter(User.cognito_id == cognito_user.get("Username"))
         .first()
     )
 
     if workout is None:
         raise HTTPException(status_code=404, detail="Workout not found")
-    if workout.profile_id != profile.id:
+    if workout.user_id != user.id:
         raise HTTPException(status_code=401, detail="Not authorized")
 
     new_exercise = ExerciseModel(
@@ -31,7 +31,7 @@ def create_service(data: Exercise, db, user):
     total_weight = workout.total_weight + data.weight * data.sets * data.reps_in_set
     workout.total_weight = total_weight
 
-    profile.total_weight += data.weight * data.sets * data.reps_in_set
+    user.total_weight += data.weight * data.sets * data.reps_in_set
 
     db.add(new_exercise)
     db.commit()
