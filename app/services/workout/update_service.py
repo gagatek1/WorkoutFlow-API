@@ -1,20 +1,18 @@
 from fastapi import HTTPException
 
-from app.models.user_profile import UserProfile
+from app.models.user import User
 from app.models.workout import Workout
 from app.schemas.workout import Workout as UpdateWorkout
 
 
-def update_service(workout_id: int, data: UpdateWorkout, db, user):
+def update_service(workout_id: int, data: UpdateWorkout, db, cognito_user):
     workout = db.query(Workout).filter(Workout.id == workout_id).first()
 
-    profile = (
-        db.query(UserProfile)
-        .filter(UserProfile.user_id == user.get("Username"))
-        .first()
+    user = (
+        db.query(User).filter(User.cognito_id == cognito_user.get("Username")).first()
     )
 
-    if profile.id != workout.profile_id:
+    if user.id != workout.user_id:
         raise HTTPException(status_code=401, detail="Not authorized")
     else:
         if data.name is not None:

@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.cognito import Cognito
-from app.models.user_profile import UserProfile
+from app.models.user import User
 from app.schemas.auth import UserSignUp
 
 
@@ -11,10 +11,10 @@ def signup_service(user: UserSignUp, cognito: Cognito, db):
     try:
         response = cognito.user_signup(user)
 
-        create_user_profile_model = UserProfile(
+        create_user_profile_model = User(
             first_name=user.first_name,
             last_name=user.last_name,
-            user_id=response["UserSub"],
+            cognito_id=response["UserSub"],
         )
 
         db.add(create_user_profile_model)

@@ -31,14 +31,14 @@ async def show_exercises(db: db_dependency, user: dict = Depends(get_token)):
     return get_exercises(db, user)
 
 
-@exercise_router.delete("/delete/{exercise_id}", status_code=status.HTTP_204_NO_CONTENT)
+@exercise_router.delete("/{exercise_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_exercise(
     exercise_id, db: db_dependency, user: dict = Depends(get_token)
 ):
     delete_service(exercise_id, db, user)
 
 
-@exercise_router.put("/update/{exercise_id}")
+@exercise_router.put("/{exercise_id}")
 async def update_exercise(
     exercise_id,
     data: UpdateExercise,
