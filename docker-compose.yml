@@ -1,10 +1,13 @@
 services:
-  db:
-      image: postgres:15-alpine
-      container_name: workoutflow_postgres
-      ports:
-      - "5432:5432"
-      environment:
-        - POSTGRES_USER=workoutflow
-        - POSTGRES_PASSWORD=workoutflow
-        - POSTGRES_DB=workoutflow_db
+  postgres:
+    image: postgres:17
+    container_name: workoutflow_postgres
+    environment:
+      POSTGRES_USER: workoutflow
+      POSTGRES_PASSWORD: workoutflow
+      POSTGRES_DB: workoutflow_db
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U workoutflow"]
+      interval: 2s
+      retries: 15
